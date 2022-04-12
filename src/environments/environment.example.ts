@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   endpoint: 'http://localhost:8080/api/',
   app_name: 'angular'
 };

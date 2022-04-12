@@ -104,3 +104,6 @@ dist
 .tern-port
 
 .angular
+
+src/environments/environment.ts
+src/environments/environment.prod.ts
