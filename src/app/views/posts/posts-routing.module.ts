@@ -1,20 +1,43 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { PostsComponent } from './posts.component';
+import { PostsListComponent } from './posts-list.component';
+import { PostsComponent } from './view/posts.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: PostsComponent,
-    data: {
-      title: 'Posts'
-    }
-  }
+    {
+        path: '',
+        component: PostsListComponent,
+        data: {
+            title: 'Posts'
+        },
+        children: [
+            {
+                path: 'create',
+                component: PostsComponent,
+                data: {
+                    title: 'Create',
+                    permissions: [
+                        'create_article'
+                    ]
+                }
+            },
+            {
+                path: 'edit/:id',
+                component: PostsComponent,
+                data: {
+                    title: 'Edit',
+                    permissions: [
+                        'edit_article'
+                    ]
+                }
+            }
+        ]
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
-export class PostsRoutingModule {}
+export class PostsRoutingModule { }

@@ -29,6 +29,8 @@ export class DefaultLayoutComponent implements OnInit {
 
 	ngOnInit() {
 		this.user = this.settings.user;
+
+		// Here we can filter the navItems acording to permissions
 	}
 
 }
