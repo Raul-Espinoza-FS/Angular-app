@@ -36,7 +36,6 @@ export class SettingsService {
     }
 
     public can(name: string) : boolean {
-        console.log(this._permissions);
         if (this._permissions.some(e => e.name === name)) {
             return true;
         }

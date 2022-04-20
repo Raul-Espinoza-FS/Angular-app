@@ -44,6 +44,7 @@ import { AuthService } from './services/shared/auth.service';
 import { TokenInterceptor } from './services/shared/token.interceptor';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -60,8 +61,9 @@ import { FormsModule } from '@angular/forms';
     ChartsModule,
     IconModule,
     IconSetModule.forRoot(),
+    ToastrModule.forRoot(),
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   declarations: [
     AppComponent,

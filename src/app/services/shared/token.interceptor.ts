@@ -6,11 +6,12 @@ import { Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { catchError} from 'rxjs/operators'
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-    constructor(private auth: AuthService, private router : Router) {}
+    constructor(private auth: AuthService, private router : Router, private toastService: ToastrService) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -27,6 +28,7 @@ export class TokenInterceptor implements HttpInterceptor {
                         this.auth.tokenExpired();
                         this.router.navigateByUrl('/login');
                     }
+                    this.toastService.error( err.error.message, '', { timeOut: 8000} );
                     return throwError(() => err);
                 })
             );
