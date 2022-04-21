@@ -13,12 +13,16 @@ export class PostService extends APIBase {
         http: HttpClient
     ) { super(http); }
 
-    getPosts() {
-
+    getPosts(page, many, direction) {
+        return this.get('posts', {
+            page: page,
+            many: many,
+            direction: direction,
+        })
     }
 
-    getPost() {
-
+    getPost(id) : Observable<any>{
+        return this.get('posts/' + id);
     }
 
     savePost(data: any) : Observable<any> {

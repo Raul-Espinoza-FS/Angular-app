@@ -1,0 +1,51 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row text-left justify-content-between">
+            <div class="col-6 col-md-2 line-height-text">
+                <i class="fa fa-align-justify"></i> Post List
+            </div>
+            <div class="col-6 col-md-2">
+                <button class="btn btn-pill btn-block btn-success">Create Post</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isLoaded" class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Tags</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let post of postsList">
+                    <td>{{post.title}}</td>
+                    <td>{{post.tags}}</td>
+                    <td>{{post.created_at | date:'medium'}}</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-12 col-md-4 mb-1">
+                                <button class="btn btn-pill btn-block btn-secondary">View</button>
+                            </div>
+                            <div class="col-12 col-md-4 mb-1">
+                                <button class="btn btn-pill btn-block btn-primary">Edit</button>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <button class="btn btn-pill btn-block btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-md-12 col-12 d-sm-down-none">
+                <pagination [directionLinks]="false" [boundaryLinks]="true" [totalItems]="totalItems"
+                    [ngModel]="currentPage" (pageChanged)="pageChanged($event)" [itemsPerPage]="itemsPerPage">
+                </pagination>
+            </div>
+        </div>
+    </div>
+</div>
