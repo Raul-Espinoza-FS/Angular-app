@@ -5,7 +5,8 @@
                 <i class="fa fa-align-justify"></i> Post List
             </div>
             <div class="col-6 col-md-2">
-                <button class="btn btn-pill btn-block btn-success">Create Post</button>
+                <a *ngIf="createPostPermission" [routerLink]="['create']" href=""
+                    class="btn btn-pill btn-block btn-success">Create Post</a>
             </div>
         </div>
     </div>
@@ -27,13 +28,16 @@
                     <td>
                         <div class="row">
                             <div class="col-12 col-md-4 mb-1">
-                                <button class="btn btn-pill btn-block btn-secondary">View</button>
+                                <a [routerLink]="['/article', post.id]" href="" target="_blank"
+                                    class="btn btn-pill btn-block btn-secondary">View</a>
                             </div>
                             <div class="col-12 col-md-4 mb-1">
-                                <button class="btn btn-pill btn-block btn-primary">Edit</button>
+                                <a [routerLink]="['edit', post.id]" href="" *ngIf="editPostPermission"
+                                    class="btn btn-pill btn-block btn-primary">Edit</a>
                             </div>
                             <div class="col-12 col-md-4">
-                                <button class="btn btn-pill btn-block btn-danger">Delete</button>
+                                <a *ngIf="deletePostPermission" (click)="dangerModal.config = {post_id: post.id}; dangerModal.show()"
+                                    class="btn btn-pill btn-block btn-danger">Delete</a>
                             </div>
                         </div>
                     </td>
@@ -49,3 +53,24 @@
         </div>
     </div>
 </div>
+
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Post?</h4>
+                <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Once the post is deleted it can't be recover. Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Close</button>
+                <button type="button" class="btn btn-danger" (click)="dangerModal.hide(); deletePost(dangerModal.config.post_id);">Yes, Delete Post</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

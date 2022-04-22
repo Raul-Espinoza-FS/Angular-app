@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from 'src/app/services/posts/post.service';
 import { lastValueFrom } from 'rxjs';
+import { SettingsService } from 'src/app/services/shared/settings.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     templateUrl: 'posts-list.component.html',
@@ -15,7 +17,18 @@ export class PostsListComponent implements OnInit {
     postsList: Array<any> = [];
     isLoaded = false;
 
-    constructor(private postService: PostService, private routeParams: ActivatedRoute, private router: Router) { }
+    // Permissions 
+    editPostPermission = false;
+    deletePostPermission = false;
+    createPostPermission = false;
+
+    constructor(private postService: PostService, private routeParams: ActivatedRoute, private router: Router,
+        private settingsService: SettingsService, private toastr: ToastrService
+    ) {
+        this.editPostPermission = this.settingsService.can('edit_article');
+        this.deletePostPermission = this.settingsService.can('delete_article');
+        this.createPostPermission = this.settingsService.can('create_article');
+    }
 
     async ngOnInit() {
         // Get optional parameters and set defaults
@@ -48,5 +61,11 @@ export class PostsListComponent implements OnInit {
                 queryParamsHandling: 'merge'
             });
         this.loadPosts(event.page, this.itemsPerPage, this.direction);
+    }
+
+    async deletePost(post_id) {
+        let postsResponse = await lastValueFrom(this.postService.deletePost(post_id));
+        this.toastr.success('', 'Post Deleted');
+        this.loadPosts(this.currentPage, this.itemsPerPage, this.direction);
     }
 }

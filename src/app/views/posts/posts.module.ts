@@ -7,6 +7,7 @@ import { PostsComponent } from './view/posts.component';
 import { PostsRoutingModule } from './posts-routing.module';
 import { TagInputModule } from 'ngx-chips';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
     declarations: [PostsListComponent, PostsComponent],
@@ -16,7 +17,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
         ReactiveFormsModule,
         TagInputModule,
         PaginationModule,
-        FormsModule
+        FormsModule,
+        ModalModule.forRoot()
     ]
 })
 export class PostsModule { }
