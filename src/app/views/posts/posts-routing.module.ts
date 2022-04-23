@@ -7,11 +7,17 @@ import { PostsComponent } from './view/posts.component';
 const routes: Routes = [
     {
         path: '',
-        component: PostsListComponent,
         data: {
             title: 'Posts'
         },
         children: [
+            {
+                path: '',
+                component: PostsListComponent,
+                data: {
+                    title: null
+                }
+            },
             {
                 path: 'create',
                 component: PostsComponent,

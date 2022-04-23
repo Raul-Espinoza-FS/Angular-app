@@ -19,7 +19,6 @@ import { DefaultLayoutComponent } from './containers';
 
 import { P404Component } from './views/error/404.component';
 import { LoginComponent } from './views/login/login.component';
-import { RegisterComponent } from './views/register/register.component';
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
@@ -44,6 +43,7 @@ import { AuthService } from './services/shared/auth.service';
 import { TokenInterceptor } from './services/shared/token.interceptor';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -60,15 +60,15 @@ import { FormsModule } from '@angular/forms';
     ChartsModule,
     IconModule,
     IconSetModule.forRoot(),
+    ToastrModule.forRoot(),
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   declarations: [
     AppComponent,
     ...APP_CONTAINERS,
     P404Component,
     LoginComponent,
-    RegisterComponent
   ],
   providers: [
     {

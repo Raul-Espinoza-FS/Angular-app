@@ -1,0 +1,64 @@
+<div class="card">
+    <div class="card-body">
+        <form (ngSubmit)="savePost()" [formGroup]="postForm" id="postForm">
+
+            <div class="row">
+                <div class="col-12">
+                    <label for="title">Title: </label>
+                    <input class="form-control" id="title" type="text" formControlName="title">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="content">Content: </label>
+                    <textarea class="form-control" id="content" type="text" formControlName="content" rows="15">
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="tags">Tags: </label>
+                    <tag-input [formControl]="tagsList" (onAdd)="onItemChanged()" (onRemove)="onItemChanged()"></tag-input>
+                </div>
+            </div>
+
+
+        </form>
+
+        <form [formGroup]="avatarForm">
+
+            <div class="row">
+                <div class="col-12">
+                    <label for="thumbnail">Thumbnail: </label>
+                    <input class="form-control" id="thumbnail" type="file" accept="image/*"
+                        (change)="showPreview($event)" />
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div *ngIf="previewImageUrl && previewImageUrl !== ''">
+                        <img class="thumbnail-image" [src]="previewImageUrl">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-footer text-right">
+        <button form="postForm" [disabled]="!postForm.valid" type="submit" class="btn btn-sm btn-primary mr-2">
+            <i class="fa fa-dot-circle-o"></i> 
+            <span *ngIf="mode == 'new'">
+                Create
+            </span> 
+            <span *ngIf="mode == 'edit'">
+                Edit
+            </span> 
+        </button>
+        <button type="reset" class="btn btn-sm btn-danger" form="postForm" (click)="resetPreview()">
+            <i class="fa fa-ban"></i> Reset
+        </button>
+    </div>
+</div>

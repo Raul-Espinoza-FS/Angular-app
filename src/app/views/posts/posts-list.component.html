@@ -1,0 +1,76 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row text-left justify-content-between">
+            <div class="col-6 col-md-2 line-height-text">
+                <i class="fa fa-align-justify"></i> Post List
+            </div>
+            <div class="col-6 col-md-2">
+                <a *ngIf="createPostPermission" [routerLink]="['create']" href=""
+                    class="btn btn-pill btn-block btn-success">Create Post</a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isLoaded" class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Tags</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let post of postsList">
+                    <td>{{post.title}}</td>
+                    <td>{{post.tags}}</td>
+                    <td>{{post.created_at | date:'medium'}}</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-12 col-md-4 mb-1">
+                                <a [routerLink]="['/article', post.id]" href="" target="_blank"
+                                    class="btn btn-pill btn-block btn-secondary">View</a>
+                            </div>
+                            <div class="col-12 col-md-4 mb-1">
+                                <a [routerLink]="['edit', post.id]" href="" *ngIf="editPostPermission"
+                                    class="btn btn-pill btn-block btn-primary">Edit</a>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <a *ngIf="deletePostPermission" (click)="dangerModal.config = {post_id: post.id}; dangerModal.show()"
+                                    class="btn btn-pill btn-block btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-md-12 col-12 d-sm-down-none">
+                <pagination [directionLinks]="false" [boundaryLinks]="true" [totalItems]="totalItems"
+                    [ngModel]="currentPage" (pageChanged)="pageChanged($event)" [itemsPerPage]="itemsPerPage">
+                </pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Post?</h4>
+                <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Once the post is deleted it can't be recover. Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Close</button>
+                <button type="button" class="btn btn-danger" (click)="dangerModal.hide(); deletePost(dangerModal.config.post_id);">Yes, Delete Post</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

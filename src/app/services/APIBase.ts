@@ -1,16 +1,17 @@
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 
 export abstract class APIBase {
     private baseUrl = environment.endpoint;
-    private _http;
+    private _http : HttpClient;
     
     constructor (_http: HttpClient) { 
         this._http = _http;
     }
 
-    protected get(url: String, params? : {[key: string] : any;}) {
+    protected get(url: String, params? : {[key: string] : any;}) : Observable<any> {
         if (params) {
             var _httpParams = new HttpParams({
                 fromObject: params
@@ -21,7 +22,7 @@ export abstract class APIBase {
         return this._http.get(this.baseUrl + url );
     }
 
-    protected post(url : String, data : {[key: string] : any;}, headers? : any) {
+    protected post(url : String, data : {[key: string] : any;}, headers? : any) : Observable<any> {
         if (headers) {
             var _headers = new HttpHeaders({
                 fromObject: headers
@@ -31,17 +32,17 @@ export abstract class APIBase {
         return this._http.post(this.baseUrl + url, data);
     }
 
-    protected put(url : String, data : {[key: string] : any;}, headers? : any) {
+    protected patch(url : String, data : {[key: string] : any;}, headers? : any) : Observable<any> {
         if(headers) {
             var _headers = new HttpHeaders({
                 fromObject: headers
             });
-            return this._http.put(this.baseUrl + url, data, {headers: _headers});
+            return this._http.patch(this.baseUrl + url, data, {headers: _headers});
         }
-        return this._http.put(this.baseUrl + url, data);
+        return this._http.patch(this.baseUrl + url, data);
     }
 
-    protected delete(url : String, data? : {[key: string] : any;}) {
+    protected delete(url : String, data? : {[key: string] : any;}) : Observable<any> {
         if (data) {
             return this._http.request('delete', this.baseUrl + url, {body: data});
         }
