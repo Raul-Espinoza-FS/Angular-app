@@ -23,7 +23,7 @@ export class SettingsService {
 
     public set user(user: object) {
         this._user = user;
-        this.cookieService.set('user', JSON.stringify(this.user));
+        this.cookieService.set('user', JSON.stringify(this.user), 7, '/');
     }
     
     public get user() {
@@ -32,7 +32,8 @@ export class SettingsService {
     
     public set permissions(permissions: Array<any>) {
         this._permissions = permissions;
-        this.cookieService.set('permissions', JSON.stringify(this._permissions));
+        console.log('aqui');
+        this.cookieService.set('permissions', JSON.stringify(this._permissions), 7, '/');
     }
 
     public can(name: string) : boolean {
@@ -44,9 +45,9 @@ export class SettingsService {
 
     public clearSettings() : void {
         this._user = null;
-        this.cookieService.delete('user');
+        this.cookieService.delete('user', '/');
         this._permissions = null;
-        this.cookieService.delete('permissions');
+        this.cookieService.delete('permissions', '/');
     }
 
     public isFilled() : boolean {

@@ -32,7 +32,7 @@ export class AuthService extends APIBase {
             this.post('login', credentials).subscribe(
                 response => {
                     const token = response.token;
-                    this.cookieService.set('token', token);
+                    this.cookieService.set('token', token, 1, '/');
                     this.settingsService.user = {
                         name: response.name
                     };
@@ -75,7 +75,7 @@ export class AuthService extends APIBase {
 
             if (!this.getToken()) {
                 //Limpiamos cookies y settings
-                this.cookieService.deleteAll();
+                this.cookieService.deleteAll('/');
                 this.settingsService.clearSettings();
                 observable.next(true);
                 observable.complete();
@@ -86,28 +86,27 @@ export class AuthService extends APIBase {
             }
 
             this.post('logout', params).subscribe(
-                response => {
-                    //Limpiamos cookies y settings
-                    this.cookieService.deleteAll();
-                    this.settingsService.clearSettings();
-                    observable.next(true);
-                    observable.complete();
-                },
-                error => {
-                    observable.error(error);
+                {
+                    error: (error) => {
+                        observable.error(error);
+                    },
+                    complete: () => {
+                        //Limpiamos cookies y settings
+                        this.cookieService.deleteAll('/');
+                        this.settingsService.clearSettings();
+                        observable.next(true);
+                        observable.complete();
+                    }
                 }
             );
-
         })
-
-
     }
 
     /**
      * deleteToken
      */
     public deleteToken() {
-        return this.cookieService.delete('token');
+        return this.cookieService.delete('token', '/');
     }
 
     /**
@@ -115,7 +114,7 @@ export class AuthService extends APIBase {
      */
     public tokenExpired() {
         //Limpiamos cookies y settings
-        this.cookieService.deleteAll();
+        this.cookieService.deleteAll('/');
         this.settingsService.clearSettings();
 
         return true;
