@@ -1,16 +1,16 @@
-FROM httpd:2.4
+FROM debian:bullseye
 
-WORKDIR /usr/local/apache2/htdocs/
+RUN apt-get update \
+    && apt-get install -y apache2
 
-#copy angular dist folder to container 
-COPY --chown=www-data:www-data ./dist .
+WORKDIR /var/www
 
-#copy htaccess and httpd.conf to container
-COPY --chown=www-data:www-data ./docker/.htaccess .htaccess
-COPY --chown=www-data:www-data ./docker/httpd.conf /usr/local/apache2/conf/httpd.conf
+COPY --chown=www-data:www-data . /var/www
 
-#change permissions
-RUN chmod -R 755 .
-
-#expose port
 EXPOSE 80
+
+RUN cp -rf /var/www/docker/000-default.conf /etc/apache2/sites-enabled/000-default.conf
+
+RUN a2enmod rewrite && a2enmod headers
+
+CMD ["apache2ctl", "-D" ,"FOREGROUND"]
