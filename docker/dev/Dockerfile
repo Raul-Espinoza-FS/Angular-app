@@ -1,14 +1,16 @@
-FROM node:16
+FROM debian:bullseye
 
-RUN mkdir /home/node/app && chown node:node /home/node/app
-RUN mkdir /home/node/app/node_modules && chown node:node /home/node/app/node_modules
+RUN apt-get update \
+    && apt-get install -y apache2
 
-WORKDIR  /home/node/app
+WORKDIR /var/www
 
-USER node
+COPY --chown=www-data:www-data . /var/www
 
-COPY --chown=node:node package.json package-lock.json ./
+EXPOSE 80
 
-RUN npm ci --quiet
+RUN cp -rf /var/www/docker/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 
-COPY --chown=node:node . .
+RUN a2enmod rewrite && a2enmod headers
+
+CMD ["apache2ctl", "-D" ,"FOREGROUND"]
