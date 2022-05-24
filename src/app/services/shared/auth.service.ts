@@ -113,7 +113,6 @@ export class AuthService extends APIBase {
      * Token Expired
      */
     public tokenExpired() {
-        //Limpiamos cookies y settings
         this.cookieService.deleteAll('/');
         this.settingsService.clearSettings();
 
